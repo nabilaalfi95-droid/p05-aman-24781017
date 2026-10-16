@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>24781017 - Verifier Token (Aman Upgraded Component)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    textarea, button { font-size: 14px; padding: 8px; }
+    textarea { width: 100%; box-sizing: border-box; }
+    .card { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 16px; margin-top: 16px; }
+    .status-ok { color: #087f5b; font-weight: bold; }
+    .status-bad { color: #dc2626; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Verifier Token (Implementasi Aman Komponen Terverifikasi)</h2>
+  <p><strong>Mahasiswa:</strong> NABILA ALFI NUR KHASANAH · <strong>NPM:</strong> 24781017 · <strong>Kelas:</strong> MI5A</p>
+  <p><strong>Pustaka:</strong> <code>token-kit@2.4.1 (Patched &amp; Pinned Component)</code></p>
+
+  <div>
+    <label for="jwt">Token JWT (Unsigned):</label>
+    <textarea id="jwt" rows="3">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcnVzZXIifQ.</textarea>
+    <button onclick="verifikasiToken()">Verifikasi Token</button>
+  </div>
+
+  <div class="card">
+    <h4>Hasil Verifikasi:</h4>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    // Komponen yang telah diperbarui dan dipin ke versi 2.4.1
+    const PATCHED_VERIFIER_VER = "2.4.1";
+    const ALLOWED_ALGORITHMS = ["HS256"];
+
+    function verifikasiToken() {
+      const token = document.getElementById("jwt").value.trim();
+      const parts = token.split(".");
+      
+      const out = document.getElementById("output");
+      if (parts.length !== 3) {
+        out.innerHTML = "<p class='status-bad'>Token malformed</p>";
+        return;
+      }
+
+      let header;
+      try {
+        header = JSON.parse(atob(parts[0].replace(/-/g, "+").replace(/_/g, "/")));
+      } catch (e) {
+        out.innerHTML = "<p class='status-bad'>Header tidak valid</p>";
+        return;
+      }
+
+      // Kontrol Keamanan: Tolak secara tegas algoritma 'none' dan verifikasi signature
+      if (!ALLOWED_ALGORITHMS.includes(header.alg)) {
+        out.innerHTML = "<p class='status-bad'>HTTP 401 Unauthorized (REJECTED: Algoritma '" + header.alg + "' tidak diizinkan oleh kebijakan keamanan verifier " + PATCHED_VERIFIER_VER + ")</p>" +
+          "<p class='status-ok'>✓ Kontrol Berhasil: Unsigned token ditolak. Wajib menggunakan algoritma kriptografis HS256 dengan signature valid.</p>";
+        return;
+      }
+
+      if (!parts[2] || parts[2] !== "VALID_SECRET_SIGNATURE") {
+        out.innerHTML = "<p class='status-bad'>HTTP 401 Unauthorized: Signature tidak valid</p>";
+        return;
+      }
+
+      out.innerHTML = "<p class='status-ok'>Token Valid dengan Signature Sah.</p>";
+    }
+    window.onload = verifikasiToken;
+  </script>
+</body>
+</html>

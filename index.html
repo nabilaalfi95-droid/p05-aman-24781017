@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P05 OWASP Top 10 - Versi Aman (Secure & Remediated) | 24781017</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    :root {
+      --bg: #061512;
+      --card-bg: #0d221d;
+      --border: #059669;
+      --text: #f0fdf4;
+      --muted: #a7f3d0;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .header {
+      background: linear-gradient(135deg, #064e3b, #0d221d);
+      border: 1px solid #047857;
+      border-top: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .brand img { height: 48px; background: #fff; padding: 4px; border-radius: 6px; }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-secure {
+      background: #064e3b;
+      color: #6ee7b7;
+      border: 1px solid #10b981;
+    }
+    h1 { font-size: 24px; font-weight: 800; margin: 8px 0; color: #fff; }
+    .meta-box {
+      background: rgba(0,0,0,0.3);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+      font-size: 14px;
+    }
+    .meta-box span { color: #a7f3d0; opacity: 0.8; }
+    .meta-box strong { color: #fff; }
+    
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      background: #0f2d25;
+      color: #a7f3d0;
+      border: 1px solid #065f46;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover { background: #134e4a; color: #fff; }
+    .tab-btn.active {
+      background: #059669;
+      color: #fff;
+      border-color: #10b981;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+    
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid #065f46;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .card-header {
+      padding: 16px 20px;
+      background: #093329;
+      border-bottom: 1px solid #065f46;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card-header h2 { font-size: 18px; color: #fff; }
+    .card-body { padding: 20px; }
+    .desc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .desc-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #0a3d31;
+      vertical-align: top;
+    }
+    .desc-table td:first-child {
+      width: 180px;
+      font-weight: 600;
+      color: #6ee7b7;
+    }
+    .code-pill {
+      background: #032b21;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #34d399;
+      font-size: 13px;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #059669;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .btn-action:hover { background: #047857; }
+    
+    .iframe-wrapper {
+      margin-top: 16px;
+      border: 1px solid #065f46;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .iframe-bar {
+      background: #093329;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #a7f3d0;
+      border-bottom: 1px solid #065f46;
+    }
+    iframe {
+      width: 100%;
+      height: 380px;
+      border: none;
+      display: block;
+      background: #fff;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: #6ee7b7;
+      opacity: 0.8;
+      font-size: 13px;
+      border-top: 1px solid #0f2d25;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <img src="assets/logo-polinela.png" alt="Polinela" onerror="this.style.display='none'">
+        <img src="assets/logo-sdgs.jpg" alt="SDGs" onerror="this.style.display='none'">
+        <span class="badge badge-secure">🛡️ VERSI AMAN (SECURE & REMEDIATED)</span>
+      </div>
+      <h1>P05: OWASP Top 10 — Demonstrasi Kontrol & Remediasi Aman</h1>
+      <p style="color: #a7f3d0; font-size: 14px;">
+        Dokumentasi audit dan verifikasi live kontrol keamanan berlapis web & API untuk mata kuliah Keamanan Sistem Informasi (PMI_1522).
+      </p>
+      
+      <div class="meta-box">
+        <div><span>Mahasiswa:</span> <strong>NABILA ALFI NUR KHASANAH</strong></div>
+        <div><span>NPM:</span> <strong>24781017</strong></div>
+        <div><span>Kelas:</span> <strong>MI 5A</strong></div>
+        <div><span>Semester:</span> <strong>5 (Ganjil 2026/2027)</strong></div>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="showTask(1)">1. Parameter Binding (Pencarian)</button>
+      <button class="tab-btn" onclick="showTask(2)">2. Otorisasi Akses (Dokumen)</button>
+      <button class="tab-btn" onclick="showTask(3)">3. Sanitasi Error (Diagnostik)</button>
+      <button class="tab-btn" onclick="showTask(4)">4. Hardened Pustaka (Token)</button>
+    </div>
+
+    <!-- TASK 1 -->
+    <div id="panel-1" class="task-card">
+      <div class="card-header">
+        <h2>Kasus 1: Remidiasi A03:2021 — Prepared Statement & Parameter Binding</h2>
+        <a href="24781017-product-search-aman.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A03:2021 - Injection (Mitigated)</strong></td></tr>
+          <tr><td>Mekanisme Kontrol</td><td>Mengganti konkatenasi string SQL dengan <em>Parameterized Queries / Prepared Statements</em> (`name = ?`).</td></tr>
+          <tr><td>Payload Uji</td><td><code class="code-pill">' OR 1=1 --</code></td></tr>
+          <tr><td>Hasil Pengujian</td><td>Payload diperlakukan murni sebagai nilai pencarian teks literal. Query mengembalikan 0 produk (aman), logika tautologi tidak dieksekusi.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-product-search-aman.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🟢 Live Sandbox: Versi Aman</span>
+            <span>File: 24781017-product-search-aman.html</span>
+          </div>
+          <iframe src="24781017-product-search-aman.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK 2 -->
+    <div id="panel-2" class="task-card" style="display:none;">
+      <div class="card-header">
+        <h2>Kasus 2: Remidiasi A01:2021 — Server-Side Ownership Check</h2>
+        <a href="24781017-private-document-aman.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A01:2021 - Broken Access Control (Mitigated)</strong></td></tr>
+          <tr><td>Mekanisme Kontrol</td><td>Penerapan validasi kepemilikan objek pada sisi server (`doc.owner === currentUser`) sebelum payload data rahasia dirender.</td></tr>
+          <tr><td>Payload Uji</td><td>ID Dokumen: <code class="code-pill">SEC-02</code> (Milik userB saat login sebagai userA)</td></tr>
+          <tr><td>Hasil Pengujian</td><td>Sistem menolak akses dengan respons <code>HTTP 403 Forbidden</code>. Dokumen finansial milik userB terlindungi sepenuhnya.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-private-document-aman.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🟢 Live Sandbox: Versi Aman</span>
+            <span>File: 24781017-private-document-aman.html</span>
+          </div>
+          <iframe src="24781017-private-document-aman.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK 3 -->
+    <div id="panel-3" class="task-card" style="display:none;">
+      <div class="card-header">
+        <h2>Kasus 3: Remidiasi A05:2021 — Baseline Hardening & Sanitasi Log</h2>
+        <a href="24781017-diagnostic-endpoint-aman.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A05:2021 - Security Misconfiguration (Mitigated)</strong></td></tr>
+          <tr><td>Mekanisme Kontrol</td><td>Hardening baseline: Menonaktifkan `DEBUG = false` pada mode produksi dan memisahkan log internal ke console server terisolasi.</td></tr>
+          <tr><td>Aksi Pemicu</td><td>Klik tombol "Uji Diagnostik Error"</td></tr>
+          <tr><td>Hasil Pengujian</td><td>Pengguna umum hanya menerima pesan generik aman dengan Reference ID pelacakan (`ERR-REF-24781017-SEC`). Stack trace dan kunci rahasia tidak bocor.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-diagnostic-endpoint-aman.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🟢 Live Sandbox: Versi Aman</span>
+            <span>File: 24781017-diagnostic-endpoint-aman.html</span>
+          </div>
+          <iframe src="24781017-diagnostic-endpoint-aman.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK 4 -->
+    <div id="panel-4" class="task-card" style="display:none;">
+      <div class="card-header">
+        <h2>Kasus 4: Remidiasi A06:2021 — Dependency Upgrading & Pinning</h2>
+        <a href="24781017-dependency-verifier-aman.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A06:2021 - Vulnerable Components (Mitigated)</strong></td></tr>
+          <tr><td>Mekanisme Kontrol</td><td>Pembaruan pustaka ke versi stabil <code>token-kit@2.4.1</code> dan penolakan tegas terhadap algoritma insecure seperti `alg: "none"`. Wajib signature HS256.</td></tr>
+          <tr><td>Payload Uji</td><td>JWT tanpa signature: <code class="code-pill">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0...</code></td></tr>
+          <tr><td>Hasil Pengujian</td><td>Sistem menggagalkan token unsigned dengan pesan penolakan <code>HTTP 401 Unauthorized</code>. Pemalsuan role dicegah.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-dependency-verifier-aman.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🟢 Live Sandbox: Versi Aman</span>
+            <span>File: 24781017-dependency-verifier-aman.html</span>
+          </div>
+          <iframe src="24781017-dependency-verifier-aman.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Politeknik Negeri Lampung — D-III Manajemen Informatika</p>
+      <p>Praktikum Keamanan Sistem Informasi P05 &copy; 2026 Nabila Alfi Nur Khasanah (24781017)</p>
+    </footer>
+  </div>
+
+  <script>
+    function showTask(index) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById("panel-" + i).style.display = (i === index) ? "block" : "none";
+      }
+      const btns = document.querySelectorAll(".tab-btn");
+      btns.forEach((btn, idx) => {
+        if (idx === index - 1) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+  </script>
+</body>
+</html>

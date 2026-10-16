@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>24781017 - Pencarian Produk (Aman)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    input, button { padding: 8px 12px; font-size: 14px; }
+    .card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 16px; margin-top: 16px; }
+    .item { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+    .status-ok { color: #087f5b; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Pencarian Produk (Implementasi Aman Parameter Binding)</h2>
+  <p><strong>Mahasiswa:</strong> NABILA ALFI NUR KHASANAH · <strong>NPM:</strong> 24781017 · <strong>Kelas:</strong> MI5A</p>
+  
+  <div>
+    <label for="search">Nama Produk:</label>
+    <input type="text" id="search" placeholder="Contoh: ' OR 1=1 --" value="' OR 1=1 --">
+    <button onclick="cariProduk()">Cari</button>
+  </div>
+
+  <div class="card">
+    <h4>Hasil Query:</h4>
+    <p><strong>Query prepared:</strong> <code>SELECT * FROM products WHERE name = ? AND active = true</code></p>
+    <p><strong>Parameter binding:</strong> <code id="param-sql">-</code></p>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Laptop", user: "admin", price: 1000, active: true },
+      { id: 2, name: "Mouse", user: "user", price: 50, active: true },
+      { id: 3, name: "Keyboard", user: "admin", price: 80, active: false }
+    ];
+
+    function cariProduk() {
+      const input = document.getElementById("search").value;
+      document.getElementById("param-sql").textContent = JSON.stringify([input]);
+      
+      // Implementasi aman: Parameter binding memperlakukan seluruh input sebagai literal string
+      const hasil = products.filter(p => p.name.toLowerCase() === input.toLowerCase() && p.active);
+
+      const resDiv = document.getElementById("results");
+      if (hasil.length === 0) {
+        resDiv.innerHTML = "<p class='status-ok'>✓ Aman: 0 produk ditemukan. Seluruh payload diperlakukan sebagai literal data pencarian.</p>";
+      } else {
+        resDiv.innerHTML = "<p class='status-ok'>Ditemukan: " + hasil.length + " produk yang cocok.</p>" +
+          hasil.map(p => "<div class='item'><strong>[" + p.id + "] " + p.name + "</strong> - Harga: $" + p.price + "</div>").join("");
+      }
+    }
+    window.onload = cariProduk;
+  </script>
+</body>
+</html>
